@@ -1,0 +1,47 @@
+@startuml
+start
+
+:Save user profile;
+:Check availability;
+
+if (Availability / price changed?) then (yes)
+    :Throw error;
+    end
+endif
+
+if (Credit card valid?) then (yes)
+    :Process payment;
+else (no)
+    :Throw error;
+    end
+endif
+
+:Store booking;
+:Notify yser (Send email); 
+
+end
+@enduml
+
+@startuml
+actor User
+participant "Booking service" as Booking
+participant "Payment gateway" as PaymentGateway
+participant "User service" as UserService
+participant "Notification service" as Notifications
+
+User -> Booking : Book a room
+Booking -> UserService : Save user profile
+
+alt Room is available and price didn't change
+    Booking -> Booking : Check availability and price
+    Booking -> PaymentGateway : Check credit card
+    PaymentGateway -> PaymentGateway : Process payment
+    alt Payment successful
+        Booking -> Notifications : Notify user by email
+    else Payment failed
+        Booking -[#red]> User: <font color=red>Report error
+    end
+else Room is not available or price changed
+    Booking -[#red]> User: <font color=red>Report error
+end
+@enduml

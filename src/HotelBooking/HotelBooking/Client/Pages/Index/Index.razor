@@ -1,20 +1,32 @@
 ﻿@inject IJSRuntime JS
+@inject IRoomService RoomService
+@inject IBookingService BookingService
+
+@using HotelBooking.Shared.Services
+@using HotelBooking.Shared.Models
 
 @page "/"
-
 
 
 <div class="row">
 <div class="col-md-12">
 <div class="mg-booking-form">
 <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item" role="presentation"><a class="nav-link active show" href="#select-room" aria-controls="select-room" role="tab" data-toggle="tab"><span class="mg-bs-tab-num">1</span><span class="mg-bs-bar"></span>Select Room</a></li>
-    <li class="nav-item" role="presentation"><a class="nav-link" href="#personal-info" aria-controls="personal-info" role="tab" data-toggle="tab"><span class="mg-bs-tab-num">2</span><span class="mg-bs-bar"></span>Personal Info</a></li>
-    <li class="nav-item" role="presentation"><a class="nav-link" href="#payment" aria-controls="payment" role="tab" data-toggle="tab"><span class="mg-bs-tab-num">3</span><span class="mg-bs-bar"></span>Payment</a></li>
-    <li class="nav-item" role="presentation"><a class="nav-link" href="#thank-you" aria-controls="thank-you" role="tab" data-toggle="tab"><span class="mg-bs-tab-num">4</span>Thank You</a></li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link @(currentTab == 0 ? "active show" : "")" @onclick="(() => currentTab = 0)" aria-controls="select-room" role="tab" data-toggle="tab"><span class="mg-bs-tab-num">1</span><span class="mg-bs-bar"></span>Select Room</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link @(currentTab == 1 ? "active show" : "")" @onclick="(() => currentTab = 1)" aria-controls="personal-info" role="tab" data-toggle="tab"><span class="mg-bs-tab-num">2</span><span class="mg-bs-bar"></span>Personal Info</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link @(currentTab == 2 ? "active show" : "")" @onclick="(() => currentTab = 2)" aria-controls="payment" role="tab" data-toggle="tab"><span class="mg-bs-tab-num">3</span><span class="mg-bs-bar"></span>Payment</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link @(currentTab == 3 ? "active show" : "")" @onclick="(() => currentTab = 3)" aria-controls="thank-you" role="tab" data-toggle="tab"><span class="mg-bs-tab-num">4</span>Thank You</a>
+    </li>
 </ul>
 <div class="tab-content">
-<div class="tab-pane fade show active" id="select-room" role="tabpanel">
+<div class="tab-pane fade @(currentTab == 0 ? "active show" : "")" id="select-room" role="tabpanel">
     <div class="mg-saerch-room">
         <div class="mg-book-now mt80">
             <div class="row">
@@ -23,38 +35,42 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="mg-bn-forms">
-                        <form>
+                        <form @onsubmit="Search">
                             <div class="row">
                                 <div class="col-md-6 col-lg-3">
                                     <div class="input-group date mg-check-in">
-                                        <div class="input-group-addon"><i class="far fa-calendar-alt"></i></div>
-                                        <input class="form-control" type="text" id="exampleInputEmail1" placeholder="Check In" autocomplete="off">
+                                        <div class="input-group-addon">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </div>
+                                        <input class="form-control" type="text" placeholder="Check In" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-3">
                                     <div class="input-group date mg-check-out">
-                                        <div class="input-group-addon"><i class="far fa-calendar-alt"></i></div>
-                                        <input class="form-control" type="text" id="exampleInputEmail1" placeholder="Check Out" autocomplete="off">
+                                        <div class="input-group-addon">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </div>
+                                        <input class="form-control" type="text" placeholder="Check Out" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-lg-3">
                                     <div class="row">
                                         <div class="col-6">
-                                            <select class="cs-select cs-skin-elastic">
+                                            <select class="cs-select cs-skin-elastic" @bind="booking.Adults">
                                                 <option value="" disabled selected>Adult</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
+                                                @foreach (int n in numberOfAdults)
+                                                {
+                                                    <option value="@n">@n</option>
+                                                }
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <select class="cs-select cs-skin-elastic">
-                                                <option value="" disabled selected>Child</option>
-                                                <option value="0">0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
+                                            <select class="cs-select cs-skin-elastic" @bind="booking.Children">
+                                                <option value="" disabled selected>Children</option>
+                                                @foreach (int n in numberOfChilren)
+                                                {
+                                                    <option value="@n">@n</option>
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -70,12 +86,20 @@
         </div>
     </div>
     <div class="mg-available-rooms">
-        <div class="mg-avl-room">
+        @foreach (var room in rooms)
+        {
+             <div class="mg-avl-room">
             <div class="row">
-                <div class="col-sm-5"><a href="#"><img class="img-fluid" src="assets/images/room-1.png" alt="" /></a></div>
+                <div class="col-sm-5">
+                    <a href="#">
+                        <img class="img-fluid" src="@room.Image" alt=""/>
+                    </a>
+                </div>
                 <div class="col-sm-7">
-                    <h3 class="mg-avl-room-title"><a href="#">Super Deluxe</a><span>$249<sup>.99</sup>/Night</span></h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia minuti firme desperantes vix sempiternum sentiri possunt, philosophia permanentes, sentit careret.</p>
+                    <h3 class="mg-avl-room-title">
+                        <a href="#">@room.Name</a><span>@room.Price<text> CHF</text></span>
+                    </h3>
+                    <p>@room.Description</p>
                     <div class="row mg-room-fecilities">
                         <div class="col-sm-6">
                             <ul>
@@ -93,7 +117,7 @@
                         <div class="col-sm-6">
                             <ul>
                                 <li>
-                                    <i class="fp-ht-dumbbell"></i> GYM fecility
+                                    <i class="fp-ht-dumbbell"></i> GYM facility
                                 </li>
                                 <li>
                                     <i class="fp-ht-tv"></i> TV LCD
@@ -104,89 +128,17 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="nav"><a class="btn btn-main btn-next-tab" href="#personal-info">Select This Room</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="mg-avl-room">
-            <div class="row">
-                <div class="col-sm-5"><a href="#"><img class="img-fluid" src="assets/images/room-2.png" alt="" /></a></div>
-                <div class="col-sm-7">
-                    <h3 class="mg-avl-room-title"><a href="#">Super Deluxe</a><span>$249<sup>.99</sup>/Night</span></h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia minuti firme desperantes vix sempiternum sentiri possunt, philosophia permanentes, sentit careret.</p>
-                    <div class="row mg-room-fecilities">
-                        <div class="col-sm-6">
-                            <ul>
-                                <li>
-                                    <i class="fp-ht-bed"></i> 2 King Beds
-                                </li>
-                                <li>
-                                    <i class="fp-ht-food"></i> Breakfast
-                                </li>
-                                <li>
-                                    <i class="far fa-sun"></i> Air conditioning
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul>
-                                <li>
-                                    <i class="fp-ht-dumbbell"></i> GYM fecility
-                                </li>
-                                <li>
-                                    <i class="fp-ht-tv"></i> TV LCD
-                                </li>
-                                <li>
-                                    <i class="fp-ht-computer"></i> Wi-fi service
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="nav">
+                        <a class="btn btn-main btn-next-tab" onclick="@(() => SelectRoom(room))">Select This Room</a>
                     </div>
-                    <div class="nav"><a class="btn btn-main btn-next-tab" href="#personal-info">Select This Room</a></div>
                 </div>
             </div>
         </div>
-        <div class="mg-avl-room">
-            <div class="row">
-                <div class="col-sm-5"><a href="#"><img class="img-fluid" src="assets/images/room-3.png" alt="" /></a></div>
-                <div class="col-sm-7">
-                    <h3 class="mg-avl-room-title"><a href="#">Super Deluxe</a><span>$249<sup>.99</sup>/Night</span></h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia minuti firme desperantes vix sempiternum sentiri possunt, philosophia permanentes, sentit careret.</p>
-                    <div class="row mg-room-fecilities">
-                        <div class="col-sm-6">
-                            <ul>
-                                <li>
-                                    <i class="fp-ht-bed"></i> 2 King Beds
-                                </li>
-                                <li>
-                                    <i class="fp-ht-food"></i> Breakfast
-                                </li>
-                                <li>
-                                    <i class="far fa-sun"></i> Air conditioning
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul>
-                                <li>
-                                    <i class="fp-ht-dumbbell"></i> GYM fecility
-                                </li>
-                                <li>
-                                    <i class="fp-ht-tv"></i> TV LCD
-                                </li>
-                                <li>
-                                    <i class="fp-ht-computer"></i> Wi-fi service
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="nav"><a class="btn btn-main btn-next-tab" href="#personal-info">Select This Room</a></div>
-                </div>
-            </div>
-        </div>
+        }
+       
     </div>
 </div>
-<div class="tab-pane fade" id="personal-info" role="tabpanel">
+<div class="tab-pane fade @(currentTab == 1 ? "active show" : "")" id="personal-info" role="tabpanel">
 <div class="row">
 <div class="col-lg-8">
 <div class="mg-book-form-personal">
@@ -195,15 +147,15 @@
 <div class="col-lg-6">
     <div class="mg-book-form-input">
         <label>First Name</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" @bind="booking.User.FirstName">
     </div>
     <div class="mg-book-form-input">
         <label>Address Line 1</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" @bind="booking.User.Address">
     </div>
     <div class="mg-book-form-input">
         <label>City</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" @bind="booking.User.City">
     </div>
     <div class="mg-book-form-input">
         <label>State/Region</label>
@@ -213,19 +165,19 @@
 <div class="col-lg-6">
 <div class="mg-book-form-input">
     <label>Last Name</label>
-    <input class="form-control" type="text">
+    <input class="form-control" type="text" @bind="booking.User.LastName">
 </div>
 <div class="mg-book-form-input">
     <label>Address Line 2</label>
-    <input class="form-control" type="text">
+    <input class="form-control" type="text" @bind="booking.User.Address1">
 </div>
 <div class="mg-book-form-input">
     <label>Zip/Post Code</label>
-    <input class="form-control" type="text">
+    <input class="form-control" type="text" @bind="booking.User.ZipCode">
 </div>
 <div class="mg-book-form-input">
 <label>Country</label>
-<select class="custom-select">
+<select class="custom-select" @bind="booking.User.Country">
 <option value="">Select your country</option>
 <option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>
@@ -497,7 +449,7 @@
     <div class="col-lg-6">
         <div class="mg-book-form-input">
             <label>Phone</label>
-            <input class="form-control" type="tel">
+            <input class="form-control" type="tel" @bind="booking.User.Phone">
         </div>
         <div class="mg-book-form-input">
             <label>Password</label>
@@ -507,7 +459,7 @@
     <div class="col-lg-6">
         <div class="mg-book-form-input">
             <label>Email Address</label>
-            <input class="form-control" type="email">
+            <input class="form-control" type="email" @bind="booking.User.Email">
         </div>
         <div class="mg-book-form-input">
             <label>Re-Password</label>
@@ -522,7 +474,9 @@
         </label>
     </div>
 </div>
-<div class="nav justify-content-between"><a class="btn btn-default btn-prev-tab" href="#select-room">Back</a><a class="btn btn-dark-main btn-next-tab" href="#payment">Next</a></div>
+<div class="nav justify-content-between">
+    <a class="btn btn-default btn-prev-tab" href="#" @onclick="MovePrevious">Back</a><a class="btn btn-dark-main btn-next-tab" href="#" @onclick="MoveNext">Next</a>
+</div>
 </div>
 </div>
 <div class="col-lg-4">
@@ -531,21 +485,31 @@
             <h2 class="mg-widget-title">Booking Details</h2>
             <div class="mg-widget-cart">
                 <div class="mg-cart-room">
-                    <img class="img-fluid" src="assets/images/room-1.png" alt="Delux Room">
-                    <h3>Super Delux</h3>
+                    <img class="img-fluid" src="@booking.Room.Image" alt="Delux Room">
+                    <h3>@booking.Room.Name</h3>
                 </div>
-                <div class="mg-widget-cart-row"><strong>Check In:</strong><span>27 Jan, 2015</span></div>
-                <div class="mg-widget-cart-row"><strong>Check Out:</strong><span>28 Jan, 2015</span></div>
-                <div class="mg-widget-cart-row"><strong>Adults:</strong><span>2</span></div>
-                <div class="mg-widget-cart-row"><strong>Child:</strong><span>1</span></div>
-                <div class="mg-cart-total"><strong>Total:</strong><span>$249.99</span></div>
+                <div class="mg-widget-cart-row">
+                    <strong>Check In:</strong><span> @booking.CheckInDate.ToShortDateString()</span>
+                </div>
+                <div class="mg-widget-cart-row">
+                    <strong>Check Out:</strong><span> @booking.CheckOutDate.ToShortDateString()</span>
+                </div>
+                <div class="mg-widget-cart-row">
+                    <strong>Adults:</strong><span> @booking.Adults</span>
+                </div>
+                <div class="mg-widget-cart-row">
+                    <strong>Child:</strong><span> @booking.Children</span>
+                </div>
+                <div class="mg-cart-total">
+                    <strong>Total:</strong><span> @booking.Price CHF</span>
+                </div>
             </div>
         </aside>
     </div>
 </div>
 </div>
 </div>
-<div class="tab-pane fade" id="payment" role="tabpanel">
+<div class="tab-pane fade @(currentTab == 2 ? "active show" : "")" id="payment" role="tabpanel">
 <div class="row">
 <div class="col-lg-8">
 <div class="mg-book-form-billing">
@@ -554,15 +518,15 @@
 <div class="col-lg-6">
     <div class="mg-book-form-input">
         <label>First Name</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" @bind="booking.User.FirstName">
     </div>
     <div class="mg-book-form-input">
         <label>Address Line 1</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" @bind="booking.User.Address">
     </div>
     <div class="mg-book-form-input">
         <label>City</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" @bind="booking.User.City">
     </div>
     <div class="mg-book-form-input">
         <label>State/Region</label>
@@ -572,19 +536,19 @@
 <div class="col-lg-6">
 <div class="mg-book-form-input">
     <label>Last Name</label>
-    <input class="form-control" type="text">
+    <input class="form-control" type="text" @bind="booking.User.LastName">
 </div>
 <div class="mg-book-form-input">
     <label>Address Line 2</label>
-    <input class="form-control" type="text">
+    <input class="form-control" type="text" @bind="booking.User.Address1">
 </div>
 <div class="mg-book-form-input">
     <label>Zip/Post Code</label>
-    <input class="form-control" type="text">
+    <input class="form-control" type="text" @bind="booking.User.ZipCode">
 </div>
 <div class="mg-book-form-input">
 <label>Country</label>
-<select class="custom-select">
+<select class="custom-select" @bind="booking.User.Country">
 <option value="">Select your country</option>
 <option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>
@@ -856,7 +820,7 @@
     <div class="col-lg-6">
         <div class="mg-book-form-input">
             <label>Card Number</label>
-            <input class="form-control" type="text">
+            <input class="form-control" type="text" @bind="booking.User.PaymentInfo.CardNumber">
         </div>
     </div>
     <div class="col-lg-6">
@@ -870,7 +834,7 @@
             <label>Expire</label>
             <div class="row">
                 <div class="col-md-6">
-                    <select class="custom-select">
+                    <select class="custom-select" @bind="booking.User.PaymentInfo.ExpiryMonth">
                         <option value="">Month</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -887,7 +851,7 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <select class="custom-select">
+                    <select class="custom-select" @bind="booking.User.PaymentInfo.ExpiryYear">
                         <option value="">Year</option>
                         <option value="15">15</option>
                         <option value="16">16</option>
@@ -906,7 +870,9 @@
         </div>
     </div>
 </div>
-<div class="nav justify-content-between"><a class="btn btn-default btn-prev-tab" href="#personal-info">Back</a><a class="btn btn-dark-main btn-next-tab" href="#thank-you">Pay Now</a></div>
+<div class="nav justify-content-between">
+    <a class="btn btn-default btn-prev-tab" href="#" @onclick="MovePrevious">Back</a><a class="btn btn-dark-main btn-next-tab" href="#" @onclick="PayNow">Pay Now</a>
+</div>
 </div>
 </div>
 <div class="col-lg-4">
@@ -915,28 +881,42 @@
             <h2 class="mg-widget-title">Booking Details</h2>
             <div class="mg-widget-cart">
                 <div class="mg-cart-room">
-                    <img class="img-fluid" src="assets/images/room-1.png" alt="Delux Room">
-                    <h3>Super Delux</h3>
+                    <img class="img-fluid" src="@booking.Room.Image" alt="Delux Room">
+                    <h3>@booking.Room.Name</h3>
                 </div>
-                <div class="mg-widget-cart-row"><strong>Check In:</strong><span>27 Jan, 2015</span></div>
-                <div class="mg-widget-cart-row"><strong>Check Out:</strong><span>28 Jan, 2015</span></div>
-                <div class="mg-widget-cart-row"><strong>Adults:</strong><span>2</span></div>
-                <div class="mg-widget-cart-row"><strong>Child:</strong><span>1</span></div>
+                <div class="mg-widget-cart-row">
+                    <strong>Check In:</strong><span> @booking.CheckInDate.ToShortDateString()</span>
+                </div>
+                <div class="mg-widget-cart-row">
+                    <strong>Check Out:</strong><span> @booking.CheckOutDate.ToShortDateString()</span>
+                </div>
+                <div class="mg-widget-cart-row">
+                    <strong>Adults:</strong><span> @booking.Adults</span>
+                </div>
+                <div class="mg-widget-cart-row">
+                    <strong>Child:</strong><span> @booking.Children</span>
+                </div>
                 <div class="mg-cart-address">
                     <strong>Your Address:</strong>
-                    <address><strong>John Doe</strong><br>	Level 13, 2 Elizabeth St, Melbourne<br>	Victoria 3000 Australia</address>
+                    <address><strong> @booking.User.FullName</strong><br> @booking.User.Address, @booking.User.ZipCode  @booking.User.City<br> @booking.User.Country</address>
                 </div>
-                <div class="mg-cart-total"><strong>Total:</strong><span>$249.99</span></div>
+                <div class="mg-cart-total">
+                    <strong>Total:</strong><span> @booking.Price CHF</span>
+                </div>
             </div>
         </aside>
     </div>
 </div>
 </div>
 </div>
-<div class="tab-pane fade" id="thank-you" role="tabpanel">
+<div class="tab-pane fade @(currentTab == 3 ? "active show" : "")" id="thank-you" role="tabpanel">
     <div class="alert alert-success alert-dismissible clearfix">
-        <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <div class="mg-alert-icon"><i class="fa fa-check"></i></div>
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <div class="mg-alert-icon">
+            <i class="fa fa-check"></i>
+        </div>
         <h3 class="mg-alert-payment">Thank you! Your booking is confirmed. Invoice Sent in your email address</h3>
     </div>
     <div class="mg-cart-container mg-paid">
@@ -946,22 +926,32 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mg-cart-room">
-                            <img class="img-fluid" src="assets/images/room-1.png" alt="Delux Room">
-                            <h3>Super Delux</h3>
-                            <p>Verbis texit statua status suo quidque concordia. Octavio, ignavi, iudicante intereant accusamus vitiis primos ullum paranda zenonem. Censes cadere urbanitas texit dicebas maius tranquilli, foris morborum divinum que medium utilior crudelis affert, quaerendum refert sequimur atqui ullus d ornamenta consumeret ut divinum, concedo percurri elaborare.</p>
+                            <img class="img-fluid" src="assets/images/room-1.png" alt="@booking.Room.Name">
+                            <h3>@booking.Room.Name</h3>
+                            <p>@booking.Room.Description</p>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <h3 class="mg-payment-id">Your Payment ID: #105152396140</h3>
-                        <div class="mg-widget-cart-row"><strong>Check In:</strong><span>27 Jan, 2015</span></div>
-                        <div class="mg-widget-cart-row"><strong>Check Out:</strong><span>28 Jan, 2015</span></div>
-                        <div class="mg-widget-cart-row"><strong>Adults:</strong><span>2</span></div>
-                        <div class="mg-widget-cart-row"><strong>Child:</strong><span>1</span></div>
+                        <h3 class="mg-payment-id">Your Payment ID: #@booking.Number</h3>
+                        <div class="mg-widget-cart-row">
+                            <strong>Check In:</strong><span> @booking.CheckInDate.ToShortDateString()</span>
+                        </div>
+                        <div class="mg-widget-cart-row">
+                            <strong>Check Out:</strong><span> @booking.CheckOutDate.ToShortDateString()</span>
+                        </div>
+                        <div class="mg-widget-cart-row">
+                            <strong>Adults:</strong><span> @booking.Adults</span>
+                        </div>
+                        <div class="mg-widget-cart-row">
+                            <strong>Child:</strong><span> @booking.Children</span>
+                        </div>
                         <div class="mg-cart-address">
                             <strong>Your Address:</strong>
-                            <address><strong>John Doe</strong><br>	Level 13, 2 Elizabeth St, Melbourne<br>	Victoria 3000 Australia</address>
+                            <address><strong>@booking.User.FullName</strong><br> @booking.User.Address, @booking.User.ZipCode @booking.User.City<br> @booking.User.Country</address>
                         </div>
-                        <div class="mg-cart-total"><strong>Total:</strong><span>$249.99</span></div>
+                        <div class="mg-cart-total">
+                            <strong>Total:</strong><span> @booking.Price CHF</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -974,12 +964,64 @@
 </div>
 
 @code {
+
+    IEnumerable<Room> rooms = Array.Empty<Room>();
+    int currentTab;
+    Booking booking = new();
+    int[] numberOfAdults = new[] { 1, 2, 3, 4 };
+    int[] numberOfChilren = new[] { 0, 1, 2, 3 };
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             await JS.InvokeVoidAsync("stylizeSelects");
-            await JS.InvokeVoidAsync("initializeTabClick");
+            await JS.InvokeVoidAsync("initializeCheckInDates");
         }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        rooms = await RoomService.GetPopularRooms();
+    }
+
+    async Task SelectRoom(Room room)
+    {
+        booking.Room = room;
+        currentTab = 1;
+        await JS.InvokeVoidAsync("scrollToTop");
+        StateHasChanged();
+    }
+
+    async Task Search()
+    {
+        rooms = await RoomService.FindRooms(DateTime.Now, DateTime.Now.AddDays(2), booking.Adults, booking.Children);
+        currentTab = 0;
+        StateHasChanged();
+    }
+
+    void MovePrevious()
+    {
+        if (--currentTab < 0)
+        {
+            currentTab = 0;
+        }
+        StateHasChanged();
+    }
+
+    void MoveNext()
+    {
+        if (++currentTab > 3)
+        {
+            currentTab = 3;
+        }
+        StateHasChanged();
+    }
+
+    async Task PayNow()
+    {
+        //TODO: call booking service
+        await BookingService.BookRoom(booking);
+        MoveNext();
     }
 }

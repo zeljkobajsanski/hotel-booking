@@ -1,31 +1,5 @@
 'use strict';
 
-
-window.stylizeSelects = function () {
-    [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
-        new SelectFx(el);
-    })
-};
-
-window.initializeTabClick = function () {
-    $('.btn-next-tab, .btn-prev-tab').click(function (e) {
-
-        e.preventDefault();
-
-        // console.log($($(this).attr('href')));
-        $(this).removeClass('active show');
-        $(this).tab('show');
-
-        $('html, body').animate({
-            scrollTop: $(".mg-booking-form").offset().top - 100
-        }, 300);
-
-        $('a[href="' + $(this).attr('href') + '"]').parents('li').trigger('click');
-        $('.mg-booking-form > ul > li > a.show.active').removeClass('active show');
-        $('.mg-booking-form > ul > li > a[href="' + $(this).attr('href') + '"]').addClass('active show');
-    });
-};
-
 (function($) {
    
     /*
@@ -250,61 +224,6 @@ window.initializeTabClick = function () {
             sync2.trigger("owl.goTo", num - 1);
         }
     }
-
-    /*
-     * Room Search form Check in and out Datepicker
-     */
-    $('.input-group.mg-check-in').datepicker({
-        startDate: "dateToday",
-        autoclose: true
-    });
-
-    $('.input-group.mg-check-in').on('hide', function(e) {
-
-        if (e.dates.length) {
-            var strDate = e.date;
-            strDate.setDate(strDate.getDate() + 1);
-
-            // $('.mg-check-out').datepicker('clearDates');
-            $('.mg-check-out').datepicker('setStartDate', strDate);
-        }
-
-        $(e.currentTarget).removeClass('focus');
-    });
-
-    $('.input-group.mg-check-in').on('show', function(e) {
-
-        $(e.currentTarget).addClass('focus');
-    });
-
-    $('.input-group.mg-check-out').on('show', function(e) {
-
-        $(e.currentTarget).addClass('focus');
-    });
-
-    $('.input-group.mg-check-out').on('hide', function(e) {
-
-        $(e.currentTarget).removeClass('focus');
-    });
-
-    $('.input-group.mg-check-in').on('changeDate', function(e) {
-
-        if (e.dates.length) {
-            var inDate = e.date,
-                outDate = $('.mg-check-out').datepicker('getDate');
-
-            if (outDate && inDate >= outDate) {
-                $('.mg-check-out').datepicker('clearDates');
-            }
-        } else {
-            $('.mg-check-out').datepicker('clearDates');
-        }
-    });
-
-    $('.input-group.mg-check-out').datepicker({
-        startDate: "dateToday",
-        autoclose: true
-    });
 
     // Sticky Header
     $(window).ready(function() {

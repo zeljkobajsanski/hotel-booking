@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Shared\HotelBooking.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models" />
+  </ItemGroup>
+
 </Project>
