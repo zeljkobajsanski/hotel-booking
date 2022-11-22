@@ -1,10 +1,9 @@
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
+using Dapr.Client;
+using HotelBooking.Shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("api-gateway.json");
-builder.Services.AddOcelot();
+builder.Services.AddDaprClient();
 
 
 
@@ -22,13 +21,16 @@ else
 }
 
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
-
 app.UseRouting();
-
+app.MapGet("/api/rooms",
+    (DaprClient daprClient) =>
+        daprClient.InvokeMethodAsync<IEnumerable<Room>>(HttpMethod.Get, "roomservice", "/api/rooms"));
+app.MapPost("/api/rooms",
+    (DaprClient daprClient, object _) =>
+        daprClient.InvokeMethodAsync<IEnumerable<Room>>(HttpMethod.Post, "roomservice", "/api/rooms"));
 app.MapFallbackToFile("index.html");
-app.UseOcelot().Wait();
 
 app.Run();
