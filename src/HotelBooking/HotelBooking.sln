@@ -9,6 +9,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Client", "Hote
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Shared", "HotelBooking\Shared\HotelBooking.Shared.csproj", "{FFDD26A3-1745-4279-A09F-53363431652D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.RoomService", "HotelBooking\RoomService\HotelBooking.RoomService.csproj", "{B1422EF9-9318-42DF-BB7F-BB1868EA6805}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.BookingService", "HotelBooking\BookingService\HotelBooking.BookingService.csproj", "{A71EBB37-452F-4B3F-9F45-8054FFC8E7C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A9E2470C-A705-4FEC-AF9C-2A9EBD1ABE99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.NotificationService", "HotelBooking\NotificationService\HotelBooking.NotificationService.csproj", "{E8FA4473-B795-4FF3-984A-46D4E124479A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.UserService", "HotelBooking\UserService\HotelBooking.UserService.csproj", "{12F1AAF8-4D1E-4FB5-BDB4-AFF7EE9512B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.PaymentService", "HotelBooking\PaymentService\HotelBooking.PaymentService.csproj", "{7EB1E48D-82D2-4A5C-B8E3-0C59DCF570F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,11 +39,38 @@ Global
 		{FFDD26A3-1745-4279-A09F-53363431652D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFDD26A3-1745-4279-A09F-53363431652D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFDD26A3-1745-4279-A09F-53363431652D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1422EF9-9318-42DF-BB7F-BB1868EA6805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1422EF9-9318-42DF-BB7F-BB1868EA6805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1422EF9-9318-42DF-BB7F-BB1868EA6805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1422EF9-9318-42DF-BB7F-BB1868EA6805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A71EBB37-452F-4B3F-9F45-8054FFC8E7C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A71EBB37-452F-4B3F-9F45-8054FFC8E7C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A71EBB37-452F-4B3F-9F45-8054FFC8E7C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A71EBB37-452F-4B3F-9F45-8054FFC8E7C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8FA4473-B795-4FF3-984A-46D4E124479A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8FA4473-B795-4FF3-984A-46D4E124479A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8FA4473-B795-4FF3-984A-46D4E124479A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8FA4473-B795-4FF3-984A-46D4E124479A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12F1AAF8-4D1E-4FB5-BDB4-AFF7EE9512B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12F1AAF8-4D1E-4FB5-BDB4-AFF7EE9512B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12F1AAF8-4D1E-4FB5-BDB4-AFF7EE9512B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12F1AAF8-4D1E-4FB5-BDB4-AFF7EE9512B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EB1E48D-82D2-4A5C-B8E3-0C59DCF570F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EB1E48D-82D2-4A5C-B8E3-0C59DCF570F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EB1E48D-82D2-4A5C-B8E3-0C59DCF570F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EB1E48D-82D2-4A5C-B8E3-0C59DCF570F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB078A03-7858-47C4-8AEA-F00C80D6EA2B}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A71EBB37-452F-4B3F-9F45-8054FFC8E7C9} = {A9E2470C-A705-4FEC-AF9C-2A9EBD1ABE99}
+		{B1422EF9-9318-42DF-BB7F-BB1868EA6805} = {A9E2470C-A705-4FEC-AF9C-2A9EBD1ABE99}
+		{E8FA4473-B795-4FF3-984A-46D4E124479A} = {A9E2470C-A705-4FEC-AF9C-2A9EBD1ABE99}
+		{12F1AAF8-4D1E-4FB5-BDB4-AFF7EE9512B5} = {A9E2470C-A705-4FEC-AF9C-2A9EBD1ABE99}
+		{7EB1E48D-82D2-4A5C-B8E3-0C59DCF570F4} = {A9E2470C-A705-4FEC-AF9C-2A9EBD1ABE99}
 	EndGlobalSection
 EndGlobal

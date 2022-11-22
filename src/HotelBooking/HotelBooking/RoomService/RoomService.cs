@@ -1,7 +1,7 @@
 ﻿using HotelBooking.Shared.Models;
 using HotelBooking.Shared.Services;
 
-namespace HotelBooking.Server.Services;
+namespace HotelBooking.RoomService;
 
 public class RoomService : IRoomService
 {
@@ -98,14 +98,14 @@ public class RoomService : IRoomService
         });
     }
 
-    public Room GetRoom(Guid roomId)
+    public Task<Room> GetRoom(Guid roomId)
     {
-        return AllRooms.Single(x => x.Id == roomId);
+        return Task.Run(() => AllRooms.Single(x => x.Id == roomId));
     }
 
-    public bool IsRoomAvailable(DateTime checkInDate, DateTime checkOutDate)
+    public Task<bool> IsRoomAvailable(DateTime checkInDate, DateTime checkOutDate)
     {
         Console.WriteLine("[Room service]: Room is available");
-        return true;
+        return Task.FromResult(true);
     }
 }

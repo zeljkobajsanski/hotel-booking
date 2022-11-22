@@ -24,12 +24,12 @@ public class RoomService : IRoomService
         return await response.Content.ReadFromJsonAsync<IEnumerable<Room>>() ?? Array.Empty<Room>();
     }
 
-    public Room GetRoom(Guid roomId)
+    public Task<Room> GetRoom(Guid roomId)
     {
         throw new NotImplementedException();
     }
 
-    public bool IsRoomAvailable(DateTime checkInDate, DateTime checkOutDate)
+    public Task<bool> IsRoomAvailable(DateTime checkInDate, DateTime checkOutDate)
     {
         throw new NotImplementedException();
     }

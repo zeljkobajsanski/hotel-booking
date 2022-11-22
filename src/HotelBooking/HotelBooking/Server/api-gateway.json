@@ -1,0 +1,34 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/index.html",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {"Host": "localhost", "Port": 5000}
+            ],
+            "UpstreamPathTemplate": "/",
+            "UpstreamHttpMethod": ["Get"]
+        },
+        {
+            "DownstreamPathTemplate": "/api/rooms",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {"Host": "localhost", "Port": 7286}
+            ],
+            "UpstreamPathTemplate": "/api/rooms",
+            "UpstreamHttpMethod": ["Get", "Post"]
+        },
+        {
+            "DownstreamPathTemplate": "/api/bookings",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {"Host": "localhost", "Port": 7011}
+            ],
+            "UpstreamPathTemplate": "/api/bookings",
+            "UpstreamHttpMethod": ["Post"]
+        }
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "https://localhost:5000"
+    }
+}
