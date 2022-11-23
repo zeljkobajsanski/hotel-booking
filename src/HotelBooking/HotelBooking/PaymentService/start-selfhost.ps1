@@ -1,0 +1,1 @@
+dapr run --app-id paymentservice --app-port 5220 -- dotnet run

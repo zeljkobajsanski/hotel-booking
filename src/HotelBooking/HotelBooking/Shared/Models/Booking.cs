@@ -3,7 +3,7 @@
 public class Booking
 {
     public Guid Id { get; set; }
-    public string Number { get; set; }
+    public string? Number { get; set; }
     public DateTime CheckInDate { get; set; } = DateTime.Now;
     public DateTime CheckOutDate { get; set; } = DateTime.Now.AddDays(2);
     public Room Room { get; set; } = new();

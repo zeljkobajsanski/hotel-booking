@@ -13,5 +13,5 @@ public class User
     public string Country { get; set; }
     public string? Phone { get; set; }
     public string Email { get; set; }
-    public PaymentInfo? PaymentInfo { get; } = new PaymentInfo();
+    public PaymentInfo? PaymentInfo { get; set; } = new PaymentInfo();
 }

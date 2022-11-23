@@ -1,5 +1,6 @@
 using Dapr.Client;
 using HotelBooking.Shared.Models;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ else
 //app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
+
 app.UseRouting();
 app.MapGet("/api/rooms",
     (DaprClient daprClient) =>
@@ -31,6 +33,8 @@ app.MapGet("/api/rooms",
 app.MapPost("/api/rooms",
     (DaprClient daprClient, object _) =>
         daprClient.InvokeMethodAsync<IEnumerable<Room>>(HttpMethod.Post, "roomservice", "/api/rooms"));
+app.MapPost("/api/bookings",
+   async (DaprClient daprClient, Booking booking) => await daprClient.PublishEventAsync("pubsub", "placedBooking", booking));
 app.MapFallbackToFile("index.html");
 
 app.Run();
