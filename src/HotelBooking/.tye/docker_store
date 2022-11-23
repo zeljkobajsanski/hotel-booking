@@ -1,0 +1,11 @@
+{"container":"maildev_2325d18d-5"}
+{"container":"server-proxy_378b9c07-1"}
+{"container":"bookingservice-proxy_fb418717-6"}
+{"container":"userservice-proxy_0f3631f0-0"}
+{"container":"paymentservice-proxy_05465079-c"}
+{"container":"server-dapr-proxy_b6314dbe-4"}
+{"container":"bookingservice-dapr-proxy_3ffe9f4c-9"}
+{"container":"userservice-dapr-proxy_644008c0-f"}
+{"container":"paymentservice-dapr-proxy_5069e174-a"}
+{"container":"roomservice-dapr-proxy_f6b3cf65-9"}
+{"container":"roomservice_0ad6e7ca-1"}

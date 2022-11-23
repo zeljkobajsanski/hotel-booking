@@ -27,3 +27,14 @@ services:
   bindings:
   - protocol: http
     containerPort: 5102
+- name: maildev
+  image: soulteary/maildev:latest
+  bindings:
+   - name: smtp
+     protocol: http
+     port: 1025
+     containerPort: 1025
+   - name: dashboard
+     protocol: http
+     port: 1080
+     containerPort: 1080
