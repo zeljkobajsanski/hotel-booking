@@ -1,0 +1,29 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+name: hotelbooking
+extensions:
+- name: dapr
+  # log-level configures the log level of the dapr sidecar
+  log-level: debug
+  # components-path configures the components path of the dapr sidecar
+  components-path: "./dapr/"
+services:
+- name: server
+  project: HotelBooking/Server/HotelBooking.Server.csproj
+  bindings:
+  - port: 5001
+- name: bookingservice
+  project: HotelBooking/BookingService/HotelBooking.BookingService.csproj
+- name: userservice
+  project: HotelBooking/UserService/HotelBooking.UserService.csproj
+- name: paymentservice
+  project: HotelBooking/PaymentService/HotelBooking.PaymentService.csproj
+- name: roomservice
+  dockerFile: HotelBooking/RoomService/Dockerfile
+  bindings:
+  - protocol: http
+    containerPort: 5102
