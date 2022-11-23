@@ -5,7 +5,14 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>PaymentService</RootNamespace>
+        <UserSecretsId>e9e89d4b-4f50-4d30-bc48-0e19edf441c3</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Shared\HotelBooking.Shared.csproj" />

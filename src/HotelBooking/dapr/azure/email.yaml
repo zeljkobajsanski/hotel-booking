@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: smtp
+spec:
+  type: bindings.smtp
+  version: v1
+  metadata:
+    - name: host
+      value: "smtp.google.com"
+    - name: port
+      value: "587"
+    - name: username
+      value: "zeljko.bajsanski@gmail.com"
+    - name: password
+      value: "***"
+    - name: emailFrom
+      value: "no-reply@hotelbooking.com"
+    - name: subject
+      value: "Booking confirmation"

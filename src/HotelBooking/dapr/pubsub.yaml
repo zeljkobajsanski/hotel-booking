@@ -3,10 +3,8 @@ kind: Component
 metadata:
   name: pubsub
 spec:
-  type: pubsub.redis
+  type: pubsub.azure.servicebus
   version: v1
   metadata:
-  - name: redisHost
-    value: localhost:6379
-  - name: redisPassword
-    value: ""
+  - name: connectionString
+    value: "Endpoint=sb://hotelbooking.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=S4mhQf/9CDMzAucHEX9ZrEouN6hYJe5H8X1vHZQw78g="

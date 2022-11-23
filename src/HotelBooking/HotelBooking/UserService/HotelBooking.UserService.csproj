@@ -5,7 +5,14 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>UserService</RootNamespace>
+        <UserSecretsId>3a2c2eaa-3c82-4d88-81e1-b354c6fb2136</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Shared\HotelBooking.Shared.csproj" />
