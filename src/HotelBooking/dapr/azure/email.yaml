@@ -7,13 +7,13 @@ spec:
   version: v1
   metadata:
     - name: host
-      value: "smtp.google.com"
+      value: "mail.bitseverywhere.rs"
     - name: port
-      value: "587"
-    - name: username
-      value: "zeljko.bajsanski@gmail.com"
+      value: "26"
+    - name: user
+      value: ""
     - name: password
-      value: "***"
+      value: ""
     - name: emailFrom
       value: "no-reply@hotelbooking.com"
     - name: subject

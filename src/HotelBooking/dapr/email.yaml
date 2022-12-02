@@ -7,9 +7,13 @@ spec:
   version: v1
   metadata:
     - name: host
-      value: "localhost"
+      value: "smtp.gmail.com"
     - name: port
-      value: "1025"
+      value: "465"
+    - name: user
+      value: ""
+    - name: password
+      value: ""
     - name: emailFrom
       value: "no-reply@hotelbooking.com"
     - name: subject
