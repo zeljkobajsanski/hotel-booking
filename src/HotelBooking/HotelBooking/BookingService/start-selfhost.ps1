@@ -1,1 +1,0 @@
-dapr run --app-id bookingservice --app-port 5225 --components-path ../../dapr -- dotnet run
