@@ -1,11 +1,14 @@
 using Dapr.Client;
+using HotelBooking.Server.Monitoring;
 using HotelBooking.Shared.Models;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDaprClient();
-
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.Configure<TelemetryConfiguration>(o => o.TelemetryInitializers.Add(new AppInsightsInitializer()));
 
 
 var app = builder.Build();
